@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Código Certo Coders — Futurista</title>
+<meta name="description" content="Comunidade Código Certo Coders - Futurista Ciano + Vermelho" />
+
+<!-- Font Awesome (ícones) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+  /* =========================
+     Variables & Reset
+     ========================= */
+  :root{
+    --bg-img: url('https://media.licdn.com/dms/image/v2/D4D22AQGKcx_f33fybg/feedshare-shrink_800/feedshare-shrink_800/0/1722469703997?e=2147483647&v=beta&t=qtanG1tzkN2hDJ86-ncgQxukLhgSibzmvqY2bO6lF2E');
+    --c-cyan: #00f0ff;
+    --c-red: #ff0033;
+    --card-bg: rgba(8,10,14,0.62);
+    --glass: rgba(255,255,255,0.03);
+    --muted: #9fb3bf;
+    --radius: 14px;
+    --accent-glow: 0 8px 36px rgba(0,240,255,0.08);
+    --neon: 0 0 18px rgba(0,240,255,0.18), 0 0 40px rgba(255,0,51,0.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;}
+  body{
+    font-family: "Times New Roman", serif;
+    color:#e6f7fa;
+    background-color:#071021;
+    background-image: var(--bg-img);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y: auto;
+    line-height:1.45;
+  }
+
+  /* subtle dark overlay for readability */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background: linear-gradient(180deg, rgba(3,6,10,0.6), rgba(2,6,12,0.72));
+    pointer-events:none;
+    z-index:0;
+    mix-blend-mode:multiply;
+  }
+
+  /* page container */
+  .site {
+    position:relative;
+    z-index:1;
+    max-width:1150px;
+    margin:32px auto;
+    padding:28px;
+  }
+
+  /* =========================
+     Header
+     ========================= */
+  header.appbar {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:18px 22px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: var(--accent-glow);
+    backdrop-filter: blur(6px);
+  }
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo {
+    width:56px;height:56px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;font-weight:800;
+    background: linear-gradient(135deg, var(--c-cyan), #7a00ff);
+    color:#001018;font-size:20px;
+    box-shadow: var(--neon);
+  }
+  .brand .title {font-size:20px; font-weight:700; letter-spacing:0.6px}
+  .brand .subtitle {font-size:12px;color:var(--muted)}
+
+  nav.main-nav {display:flex;gap:10px;align-items:center}
+  nav.main-nav a {
+    text-decoration:none;color:var(--muted);padding:8px 14px;border-radius:8px;
+    font-weight:600;font-size:15px;transition:all .22s;
+    border:1px solid transparent;
+    transform: translateZ(0);
+  }
+  nav.main-nav a:hover, nav.main-nav a.active {
+    color:#fff;background:linear-gradient(90deg, rgba(0,240,255,0.06), rgba(255,0,51,0.03));
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    border-color: rgba(255,255,255,0.04);
+    transform: translateY(-3px);
+  }
+
+  /* =========================
+     Layout grid: hero + aside
+     ========================= */
+  .grid {
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:22px;
+    margin-top:22px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding:18px;
+    border: 1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 10px 30px rgba(2,6,18,0.6);
+    backdrop-filter: blur(6px);
+  }
+
+  /* hero */
+  .hero h1 {
+    font-size:32px;color:var(--c-cyan);
+    text-shadow: 0 2px 8px rgba(0,240,255,0.06);
+  }
+  .lead { color:var(--muted); font-size:15px; margin-top:8px }
+
+  /* CTA group */
+  .cta-row{display:flex;gap:10px;margin-top:14px}
+  .btn {
+    padding:10px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:700;
+    transition: transform .18s, box-shadow .18s;
+  }
+  .btn.ghost { background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+  .btn.primary {
+    background: linear-gradient(90deg, var(--c-red), #ff4a6a);
+    color:white;
+    box-shadow: 0 12px 36px rgba(255,0,51,0.12), 0 4px 14px rgba(0,0,0,0.5);
+  }
+  .btn.primary:hover { transform: translateY(-4px); filter:brightness(.98) }
+
+  /* vagas list */
+  .vagas-list{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+  .vaga {
+    display:flex;justify-content:space-between;gap:14px;align-items:center;
+    padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    transform-origin:center; transition: transform .28s, box-shadow .28s;
+  }
+  .vaga:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 18px 40px rgba(0,0,0,0.5) }
+
+  .vaga .meta h3 { font-size:18px; color:#fff; margin-bottom:4px }
+  .vaga .meta p { color:var(--muted); font-size:14px }
+
+  /* =========================
+     Forms — modern animated
+     ========================= */
+  .form-card {
+    margin-top:8px;
+    border-radius:14px;
+    padding:20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+
+  form.field-form {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:12px;
+    align-items:end;
+  }
+  /* single column for contact form */
+  form#contatoForm {
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    align-items:stretch;
+  }
+
+  .field {
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+  label.field-label {
+    font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:600;
+  }
+  input, textarea, select {
+    background: rgba(8,10,12,0.5);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding:12px 14px;border-radius:10px;color:#eafcff;
+    font-size:15px;
+    transition: box-shadow .16s, border-color .16s, transform .12s;
+  }
+  textarea { min-height:120px; resize:vertical; }
+
+  input:focus, textarea:focus {
+    outline:none; border-color:var(--c-cyan); box-shadow: 0 6px 28px rgba(0,240,255,0.06);
+    transform: translateY(-2px);
+  }
+
+  /* placeholder animation: label moves up on focus or filled */
+  .field input:not(:placeholder-shown) + .float-label,
+  .field textarea:not(:placeholder-shown) + .float-label,
+  .field input:focus + .float-label,
+  .field textarea:focus + .float-label {
+    transform: translateY(-22px) scale(.86);
+    opacity:1;
+    color:var(--c-cyan);
+  }
+  .float-label {
+    position:absolute;
+    left:14px; top:14px;
+    pointer-events:none;
+    color:rgba(255,255,255,0.55);
+    transition: transform .16s, color .16s, opacity .16s;
+  }
+
+  /* button consistent */
+  .form-actions { display:flex; gap:10px; align-items:center; justify-content:center; margin-top:6px }
+  .btn-submit {
+    min-width:180px; background: linear-gradient(90deg, var(--c-red), #ff5577); color:white;
+    border-radius:10px;padding:12px 16px;font-weight:800; letter-spacing: .6px;
+    box-shadow: 0 10px 30px rgba(255,0,51,0.12);
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .btn-submit:hover{ transform: translateY(-4px); }
+
+  /* section title decorative line */
+  .section-title {
+    display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:10px;
+  }
+  .section-title .decor { width:64px;height:4px;border-radius:4px;background: linear-gradient(90deg,var(--c-cyan),var(--c-red)); box-shadow: var(--neon) }
+
+  /* footer / socials */
+  footer.site-footer {
+    margin-top:42px;padding:18px;text-align:center;border-radius:12px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+  .social-icons { display:flex;gap:14px;justify-content:center;align-items:center;margin-top:8px }
+  .social-icons a { color:#bfeff8; font-size:20px; padding:8px; border-radius:8px; transition:.2s }
+  .social-icons a:hover { color:var(--c-cyan); transform:translateY(-6px); text-shadow: 0 0 12px var(--c-cyan) }
+
+  /* =========================
+     Responsive
+     ========================= */
+  @media (max-width: 980px){
+    .grid { grid-template-columns: 1fr; }
+    form.field-form { grid-template-columns:1fr; }
+    .site { padding:18px; }
+  }
+  @media (max-width:520px){
+    header.appbar { flex-direction:column; gap:8px; text-align:center }
+    nav.main-nav a { font-size:14px; margin:6px }
+    .hero h1 { font-size:26px }
+  }
+
+  /* small utility */
+  .muted { color:var(--muted) }
+  .hidden { display:none }
+  [aria-live] { min-height:18px }
+</style>
+</head>
+<body>
+
+<div class="site">
+
+  <!-- HEADER -->
+  <header class="appbar" role="banner">
+    <div class="brand">
+      <div class="logo">CC</div>
+      <div>
+        <div class="title">Código Certo Coders</div>
+        <div class="subtitle">Comunidade · Aprendizado · Projetos</div>
+      </div>
+    </div>
+
+    <nav class="main-nav" role="navigation" aria-label="Menu principal">
+      <a href="#home" class="active" data-link>Início</a>
+      <a href="#vagas" data-link>Vagas</a>
+      <a href="#eventos" data-link>Eventos</a>
+      <a href="#contato" data-link>Contato</a>
+    </nav>
+  </header>
+
+  <!-- GRID: HERO + ASIDE -->
+  <div class="grid">
+    <main class="card" id="home" role="main">
+      <div class="section-title">
+        <div class="decor"></div>
+        <h1 style="margin:0">Bem-vindo à Código Certo Coders</h1>
+        <p class="lead">Aprenda, contribua e cresça em projetos reais com a nossa comunidade.</p>
+      </div>
+
+      <p class="muted">Participe de mentorias, workshops e grupos de estudo. Abaixo estão algumas vagas disponíveis e formas de contato.</p>
+
+      <div class="cta-row">
+        <button class="btn primary" data-scroll="#vagas">Ver Vagas</button>
+        <button class="btn ghost" data-scroll="#contato">Fale Conosco</button>
+      </div>
+
+      <!-- vagas compact preview -->
+      <div class="vagas-list" aria-live="polite" id="vagasList"></div>
+    </main>
+
+    <!-- RIGHT ASIDE -->
+    <aside class="card">
+      <h3 style="color:var(--c-cyan);margin-bottom:6px">Resumo Rápido</h3>
+      <p class="muted">3 vagas ativas · Próximo evento: 21/11/2025</p>
+
+      <div class="form-card" style="margin-top:14px">
+        <h4 style="margin-bottom:8px">Assine a Newsletter</h4>
+        <form id="newsletterForm">
+          <div class="field">
+            <label class="field-label" for="newsletterEmail">E-mail</label>
+            <input id="newsletterEmail" type="email" placeholder="seu@exemplo.com" required>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:8px;justify-content:center">
+            <button class="btn primary" type="submit">Inscrever</button>
+          </div>
+          <div id="newsletterMsg" aria-live="polite" style="margin-top:8px;text-align:center"></div>
+        </form>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- VAGAS -->
+  <section class="card" id="vagas" aria-labelledby="vagas-title" style="margin-top:22px">
+    <div class="section-title"><div class="decor"></div><h2 id="vagas-title">Vagas Disponíveis</h2></div>
+    <p class="lead muted" style="text-align:center">Encontre oportunidades de voluntariado e colaboração.</p>
+
+    <div style="margin-top:16px" id="vagasCards"></div>
+  </section>
+
+  <!-- EVENTOS -->
+  <section class="card" id="eventos" style="margin-top:22px">
+    <div class="section-title"><div class="decor"></div><h2>Eventos</h2></div>
+    <p class="muted" style="text-align:center">Próximos encontros e workshops</p>
+    <ul style="margin-top:14px;list-style:none;padding-left:0;display:flex;flex-direction:column;gap:10px">
+      <li style="padding:12px;background:rgba(255,255,255,0.02);border-radius:10px">Workshop: Testes Básicos — 21/11/2025</li>
+      <li style="padding:12px;background:rgba(255,255,255,0.02);border-radius:10px">Hackathon: Código Certo — 05/12/2025</li>
+    </ul>
+  </section>
+
+  <!-- CONTATO -->
+  <section class="card" id="contato" aria-labelledby="contato-title" style="margin-top:22px">
+    <div class="section-title"><div class="decor"></div><h2 id="contato-title">Contato</h2></div>
+    <h3 style="text-align:center;margin-bottom:6px">Dúvidas? Entre em contato.</h3>
+
+    <form id="contatoForm" class="form-card" novalidate>
+      <div class="field">
+        <label class="field-label" for="contatoNome">Nome</label>
+        <input id="contatoNome" type="text" placeholder="Digite seu nome" required>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="contatoEmail">E-mail</label>
+        <input id="contatoEmail" type="email" placeholder="seu@exemplo.com" required>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="contatoMsg">Mensagem</label>
+        <textarea id="contatoMsg" placeholder="Escreva sua mensagem..." rows="5" required></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-submit" type="submit">Enviar Mensagem</button>
+      </div>
+
+      <div id="contatoMsgStatus" aria-live="polite" style="text-align:center;margin-top:6px"></div>
+    </form>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div>Desenvolvido por <strong>Marcos Luiz Mendes Junior</strong></div>
+    <div class="social-icons" aria-hidden="false">
+      <a href="mailto:seuemail@gmail.com" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="mailto:seuemail@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      <a href="mailto:seuemail@gmail.com" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+    </div>
+  </footer>
+
+</div> <!-- .site -->
+
+<!-- =========================
+     JavaScript: interactivity, render vagas, form validation, scroll reveal
+     ========================= -->
+<script>
+  // sample vagas data
+  const vagas = [
+    {id:1, title:'Instrutor Voluntário - Testes', desc:'Apoiar aulas práticas de QA, 3h semanais', hours:'Tarde'},
+    {id:2, title:'Mentor - Frontend', desc:'Acompanhar projetos iniciais de HTML/CSS', hours:'Noite'},
+    {id:3, title:'Apoio em Infra', desc:'Configuração de ambientes e deploy', hours:'Manhã'}
+  ];
+
+  // render vagas (compact list in hero)
+  const vagasList = document.getElementById('vagasList');
+  const vagasCards = document.getElementById('vagasCards');
+  function renderVagas() {
+    vagasList.innerHTML = '';
+    vagasCards.innerHTML = '';
+    vagas.forEach(v=>{
+      // small item
+      const item = document.createElement('div');
+      item.className = 'vaga';
+      item.innerHTML = `
+        <div class="meta">
+          <h3>${v.title}</h3>
+          <p>${v.desc}</p>
+          <p class="muted" style="margin-top:6px;font-size:13px">Horário: ${v.hours}</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="btn ghost" onclick="openVaga(${v.id})">Detalhes</button>
+          <button class="btn primary" onclick="openInscricao(${v.id})">Quero Participar</button>
+        </div>
+      `;
+      vagasList.appendChild(item);
+
+      // big card
+      const card = document.createElement('div');
+      card.className = 'vaga';
+      card.style.marginTop = '10px';
+      card.innerHTML = `
+        <div class="meta">
+          <h3>${v.title}</h3>
+          <p>${v.desc}</p>
+          <p class="muted" style="margin-top:8px;font-size:13px">Horário: ${v.hours}</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <button class="btn ghost" onclick="openVaga(${v.id})">Detalhes</button>
+          <button class="btn primary" onclick="openInscricao(${v.id})">Quero Participar</button>
+        </div>
+      `;
+      vagasCards.appendChild(card);
+    });
+  }
+  renderVagas();
+
+  // simple handlers
+  function openVaga(id){ alert('Detalhes da vaga (simulação) — ID: '+id) }
+  function openInscricao(id){
+    // scroll to contato and fill a hidden field (we simply focus the name)
+    document.querySelector('#contato').scrollIntoView({behavior:'smooth'});
+    setTimeout(()=>document.getElementById('contatoNome').focus(),500);
+  }
+
+  // newsletter submit
+  document.getElementById('newsletterForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const em = document.getElementById('newsletterEmail').value.trim();
+    const msg = document.getElementById('newsletterMsg');
+    if(!em || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ msg.innerHTML = '<span style="color:#ffb4b4">Informe um e-mail válido.</span>'; return }
+    msg.innerHTML = '<span style="color:#b6ffd8">Inscrição recebida! (simulado)</span>';
+    setTimeout(()=>msg.textContent='',3000);
+    e.target.reset();
+  });
+
+  // contato form validation (simulado)
+  document.getElementById('contatoForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const nome = document.getElementById('contatoNome').value.trim();
+    const email = document.getElementById('contatoEmail').value.trim();
+    const msg = document.getElementById('contatoMsg').value.trim();
+    const status = document.getElementById('contatoMsgStatus');
+    status.innerHTML = '';
+    if(!nome || !email){ status.innerHTML = '<span style="color:#ffb4b4">Preencha nome e e-mail.</span>'; return }
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ status.innerHTML = '<span style="color:#ffb4b4">E-mail inválido.</span>'; return }
+    // simulate success
+    status.innerHTML = '<span style="color:#b6ffd8">Mensagem enviada (simulação). Obrigado!</span>';
+    e.target.reset();
+    setTimeout(()=>status.textContent='',3500);
+  });
+
+  // smooth scroll for nav
+  document.querySelectorAll('[data-link]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      e.preventDefault();
+      document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
+      a.classList.add('active');
+      const id = a.getAttribute('href').replace('#','');
+      document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  // small keyboard helper
+  document.addEventListener('keydown', e=>{
+    if(e.key.toLowerCase()==='v') document.getElementById('vagas').scrollIntoView({behavior:'smooth'});
+  });
+
+  // tiny scroll reveal on elements
+  const revealEls = Array.from(document.querySelectorAll('.card, .vaga, section'));
+  function onScrollReveal(){
+    const top = window.scrollY + window.innerHeight * 0.85;
+    revealEls.forEach(el=>{
+      if(!el.dataset.revealed && el.getBoundingClientRect().top + window.scrollY < top){
+        el.style.transform = 'translateY(0)';
+        el.style.opacity = '1';
+        el.dataset.revealed = '1';
+      }
+    });
+  }
+  // initialize hidden state
+  revealEls.forEach(el=>{
+    el.style.transform = 'translateY(12px)';
+    el.style.opacity = '0';
+    el.style.transition = 'transform .6s cubic-bezier(.16,.9,.3,1), opacity .6s ease';
+  });
+  window.addEventListener('load', onScrollReveal);
+  window.addEventListener('scroll', onScrollReveal);
+
+  // expose QA helpers
+  window.__TEST_HELPERS = {
+    getVagasCount: ()=>vagas.length,
+    clearStorage: ()=>localStorage.clear()
+  };
+</script>
+
+</body>
+</html>
